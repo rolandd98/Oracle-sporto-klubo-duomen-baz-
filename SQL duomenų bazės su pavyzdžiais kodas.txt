@@ -1,0 +1,802 @@
+
+/*==============================================================*/
+/* DROP FK                                */
+/*==============================================================*/
+
+alter table DARBO_SUTARTIS
+   drop constraint FK_DARBOSUTARTIS_SKYRIUS;
+
+alter table DARBO_SUTARTIS
+   drop constraint FK_DARBOSUTARTIS_DARBUOTOJAS;
+
+alter table ASMENINE_TRENIRUOTE
+   drop constraint FK_ASMTRENIRUOTE_DARBUOTOJAS;
+
+alter table PAPILDO_PARDAVIMAS
+   drop constraint FK_PAPILDO_PARD_DARBUOTOJAS;
+
+alter table PAPILDO_PARDAVIMAS
+   drop constraint FK_PAPILDO_PARD_PAPILDAS;
+
+alter table GRUPINE_TRENIRUOTE
+   drop constraint FK_GRUPTRENIRUOTE_DARBUOTOJAS;
+
+alter table MOKEJIMAS
+   drop constraint FK_MOKEJIMAS_DARBUOTOJAS;
+
+alter table KLIENTAS
+   drop constraint FK_KLIENTAS_DARBUOTOJAS;
+
+alter table ASMENINE_TRENIRUOTE
+   drop constraint FK_ASMTRENIRUOTE_KLIENTAS;
+
+alter table MOKEJIMAS
+   drop constraint FK_MOKEJIMAS_KLIENTAS;
+
+alter table KLIENTAS
+   drop constraint FK_KLIENTAS_ABONEMENTAS;
+
+alter table PATALPOS_DARBAS
+   drop constraint FK_PDARBAS_PVIETA;
+
+alter table PATALPOS_DARBAS
+   drop constraint FK_PDARBAS_SKYRIUS;
+
+alter table PATALPOS_DARBAS
+   drop constraint FK_PDARBAS_BZONA;
+
+alter table PATALPOS_DARBAS
+   drop constraint FK_PDARBAS_SPORTOSALE;
+
+alter table INVENTORIUS
+   drop constraint FK_INVENTORIUS_SKYRIUS;
+
+alter table GEDIMAS
+   drop constraint FK_GEDIMAS_SKYRIUS;
+
+alter table TRENIRUOKLIS
+   drop constraint FK_SPORTOSALE_TRENKLIS;
+
+alter table PAPILDO_UZSAKYMAS
+   drop constraint FK_PAPILDO_UZSAK_DARBUOTOJAS;
+
+alter table PAPILDO_UZSAKYMAS
+   drop constraint FK_PAPILDO_UZSAK_TIEKEJAS;
+
+alter table PAPILDO_UZSAKYMAS
+   drop constraint FK_PAPILDO_UZSAK_PAPILDAS;
+
+/*==============================================================*/
+/* DROP Indeksai                                       */
+/*==============================================================*/
+
+drop index D_SUTARTIS_SKYRIAUS_PAV_IX;
+
+
+drop index D_SUTARTIS_DARBUOTOJO_ID_IX ;
+
+
+drop index A_TRENIRUOTE_DARBUOTO_ID_IX;
+
+
+drop index PAPILDO_UZSAK_DARBUOTOJO_ID_IX;
+
+
+drop index G_TRENIRUOTE_DARBUOTOJO_ID_IX;
+
+
+drop index MOKEJIMAS_DARBUOTOJO_ID_IX;
+
+
+drop index KLIENTAS_DARBUOTOJO_ID_IX;
+
+
+drop index PAPILDO_UZSAK_TIEKEJO_ID_IX;
+
+
+drop index PAPILDO_UZSAK_PAPILDO_BAR_IX;
+
+
+drop index A_TRENIRUOTE_KLIENTO_ID_IX ;
+
+
+drop index MOKEJIMAS_KLIENTO_ID_IX;
+
+
+drop index KLIENTAS_ABONEMENTO_ID_IX;
+
+
+drop index P_DARBAS_S_PAVADINIMAS_IX;
+
+
+drop index P_DARBAS_PVIETOS_ID_IX;
+
+
+drop index P_DARBAS_SALES_ID_IX;
+
+
+drop index P_DARBAS_ZONOS_ID_IX;
+
+
+drop index INVENTORIUS_S_PAVADINIMAS_IX;
+
+
+drop index GEDIMAS_S_PAVADINIMAS_IX;
+
+
+drop index TRENIRUOKLIS_SALES_ID_IX;
+
+
+drop index PAPILDO_PARD_DARBUOTOJO_ID_IX;
+
+
+drop index PAPILDO_PARD_PAPILDO_BAR_IX;
+
+
+/*==============================================================*/
+/* DROP TABLES                                       */
+/*==============================================================*/
+
+drop table ABONEMENTAS cascade constraints;
+
+drop table ASMENINE_TRENIRUOTE cascade constraints;
+
+drop table BASEINO_ZONA cascade constraints;
+
+drop table DARBUOTOJAS cascade constraints;
+
+drop table DARBO_SUTARTIS cascade constraints;
+
+drop table GEDIMAS cascade constraints;
+
+drop table GRUPINE_TRENIRUOTE cascade constraints;
+
+drop table INVENTORIUS cascade constraints;
+
+drop table KLIENTAS cascade constraints;
+
+drop table MOKEJIMAS cascade constraints;
+
+drop table PAPILDAS cascade constraints;
+
+drop table PAPILDO_PARDAVIMAS cascade constraints;
+
+drop table PATALPOS_DARBAS cascade constraints;
+
+drop table PERSIRENGIMO_VIETA cascade constraints;
+
+drop table SKYRIUS cascade constraints;
+
+drop table SPORTO_SALE cascade constraints;
+
+drop table TIEKEJAS cascade constraints;
+
+drop table TRENIRUOKLIS cascade constraints;
+
+drop table PAPILDO_UZSAKYMAS cascade constraints;
+
+
+/*==============================================================*/
+/* CREATE TABLES                                        */
+/*==============================================================*/
+
+
+/*==============================================================*/
+/* Table: ABONEMENTAS                                           */
+/*==============================================================*/
+create table ABONEMENTAS 
+(
+   ABONEMENTO_ID        NUMBER(8)            not null,
+   APMOKEJIMO_STATUSAS  SMALLINT             not null,
+   ABONEMENTO_KAINA     NUMBER(20)           not null,
+   PRADZIOS_DATA        DATE                 not null,
+   PASIBAIGIMO_DATA     DATE                 not null,
+   PRIEIGA_PRIE_SPORTO_SALIU SMALLINT        not null,
+   PRIEIGA_PRIE_BASEINO_ZONU SMALLINT        not null,
+   NUO_17_00_DARBO_DIENOMIS SMALLINT         not null,
+   PRIEIGA_SAVAITGALIAIS SMALLINT            not null,
+   constraint PK_ABONEMENTAS primary key (ABONEMENTO_ID)
+   
+);
+
+/*==============================================================*/
+/* Table: ASMENINE_TRENIRUOTE                                   */
+/*==============================================================*/
+create table ASMENINE_TRENIRUOTE 
+(
+   A_TRENIRUOTES_ID     NUMBER(20)           not null,
+   KLIENTO_ID           NUMBER(20)           not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   TRENIRUOTES_TIPAS    VARCHAR2(20)         not null,
+   ASM_T_TRUKME         NUMBER(10),
+   T_KAINA              NUMBER(20)           not null,
+   TRENIRUOTES_DATA_IR_LAIKAS DATE           not null,
+   SUDEGINTOS_KALORIJOS NUMBER(7),
+   TRENIRUOTES_KOMENTARAS VARCHAR2(50),
+   KLIENTO_SVORIS       FLOAT(5),
+   constraint PK_ASMENINE_TRENIRUOTE primary key (A_TRENIRUOTES_ID)
+);
+
+/*==============================================================*/
+/* Table: BASEINO_ZONA                                          */
+/*==============================================================*/
+create table BASEINO_ZONA 
+(
+   ZONOS_ID             NUMBER(20)           not null,
+   ZONOS_PAVADINIMAS    VARCHAR2(50)         not null,
+   ISNAUDOJAMAS_VANDENS_KIEKIS NUMBER(20),
+   constraint PK_BASEINO_ZONA primary key (ZONOS_ID)
+);
+
+/*==============================================================*/
+/* Table: DARBO_SUTARTIS                                        */
+/*==============================================================*/
+create table DARBO_SUTARTIS 
+(
+   DARBO_SUTARTIES_ID   NUMBER(20)           not null,
+   SKYRIAUS_PAVADINIMAS VARCHAR2(50)         not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   PAREIGOS             VARCHAR2(50)         not null,
+   D_S_PASIRASYMO_DATA  DATE                 not null,
+   D_S_PANAIKINIMO_DATA DATE,
+   constraint PK_DARBO_SUTARTIS primary key (DARBO_SUTARTIES_ID)
+);
+
+
+/*==============================================================*/
+/* Table: DARBUOTOJAS                                           */
+/*==============================================================*/
+create table DARBUOTOJAS 
+(
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   D_VARDAS             VARCHAR2(50)         not null,
+   D_PAVARDE            VARCHAR2(50)         not null,
+   D_TELEFONO_NUMERIS   VARCHAR2(20)         not null,
+   D_EL_PASTAS          VARCHAR2(50)         not null,
+   constraint PK_DARBUOTOJAS primary key (DARBUOTOJO_ID)
+);
+
+
+/*==============================================================*/
+/* Table: GEDIMAS                                               */
+/*==============================================================*/
+create table GEDIMAS 
+(
+   GEDIMO_ID            NUMBER(20)           not null,
+   SKYRIAUS_PAVADINIMAS VARCHAR2(50)         not null,
+   GEDIMO_LAIKAS_IR_DATA DATE                not null,
+   GEDIMO_STATUSAS      SMALLINT             not null,
+   TAISYMO_LAIKAS_IR_DATA DATE,
+   GEDIMO_APRASYMAS     VARCHAR2(100)        not null,
+   constraint PK_GEDIMAS primary key (GEDIMO_ID)
+);
+
+/*==============================================================*/
+/* Table: GRUPINE_TRENIRUOTE                                    */
+/*==============================================================*/
+create table GRUPINE_TRENIRUOTE 
+(
+   G_TRENIRUOTES_ID     NUMBER(20)           not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   PRADZIOS_LAIKAS      DATE                 not null,
+   TRUKME               NUMBER(10)                 not null,
+   INTENSYVUMO_LYGIS    NUMBER(2)            not null,
+   constraint PK_GRUPINE_TRENIRUOTE primary key (G_TRENIRUOTES_ID)
+);
+
+/*==============================================================*/
+/* Table: INVENTORIUS                                           */
+/*==============================================================*/
+create table INVENTORIUS 
+(
+   INVENTORIAUS_ID      NUMBER(20)           not null,
+   SKYRIAUS_PAVADINIMAS VARCHAR2(50)         not null,
+   INVERNTORIAUS_KATEGORIJA VARCHAR2(20),
+   INVENTORIAUS_ISIGIJIMO_DATA DATE,
+   constraint PK_INVENTORIUS primary key (INVENTORIAUS_ID)
+);
+
+/*==============================================================*/
+/* Table: KLIENTAS                                              */
+/*==============================================================*/
+create table KLIENTAS 
+(
+   KLIENTO_ID           NUMBER(20)           not null,
+   ABONEMENTO_ID        NUMBER(8)            not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   K_VARDAS             VARCHAR2(50)         not null,
+   K_PAVARDE            VARCHAR2(50)         not null,
+   SASKAITOS_NUMERIS    VARCHAR2(20),
+   K_EL_PASTAS         VARCHAR2(50)         not null,
+   K_TELEFONO_NUMERIS   VARCHAR2(20)         not null,
+   constraint PK_KLIENTAS primary key (KLIENTO_ID)
+);
+
+
+
+/*==============================================================*/
+/* Table: MOKEJIMAS                                             */
+/*==============================================================*/
+create table MOKEJIMAS 
+(
+   MOKEJIMO_ID          NUMBER(20)           not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   KLIENTO_ID           NUMBER(20)           not null,
+   SUMA                 NUMBER(20)           not null,
+   MOKEJIMO_DATA_IR_LAIKAS        DATE       not null,
+   PASKIRTIS            VARCHAR2(100)        not null,
+   constraint PK_MOKEJIMAS primary key (MOKEJIMO_ID)
+);
+
+
+/*==============================================================*/
+/* Table: PAPILDAS                               */
+/*==============================================================*/
+
+create table PAPILDAS 
+(
+   PAPILDO_BARKODAS     NUMBER(20)           not null,
+   PAPILDO_PAVADINIMAS  VARCHAR2(20)         not null,
+   PAPILDO_RUSIS        VARCHAR2(20)         not null,
+   VIENETO_KAINA        NUMBER(5)            not null,
+   VIENETO_SVORIS       FLOAT(5)             not null,
+   GAMINTOJAS           VARCHAR2(20)         not null,
+   constraint PK_PAPILDAS primary key (PAPILDO_BARKODAS)
+);
+
+/*==============================================================*/
+/* Table: PAPILDO_PARVADINIMAS                                   */
+/*==============================================================*/
+create table PAPILDO_PARDAVIMAS 
+(
+   PARDAVIMO_ID         NUMBER(20)           not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   PAPILDO_BARKODAS     NUMBER(20)           not null,
+   PARDAVIMO_DATA_IR_LAIKAS DATE             not null,
+   PARDAVIMO_KIEKIS     NUMBER(3)            not null,
+   constraint PK_PAPILDO_PARDAVIMAS primary key (PARDAVIMO_ID)
+);
+
+/*==============================================================*/
+/* Table: PAPILDO_UZSAKYMAS                                             */
+/*==============================================================*/
+create table PAPILDO_UZSAKYMAS 
+(
+   UZSAKYMO_ID          NUMBER(20)           not null,
+   DARBUOTOJO_ID        NUMBER(20)           not null,
+   TIEKEJO_ID           NUMBER(20)           not null,
+   PAPILDO_BARKODAS     NUMBER(20)           not null,
+   UZSAKYMO_KIEKIS      NUMBER(5)            not null,
+   UZSAKYMO_DATA_IR_LAIKAS DATE              not null,
+   PRISTATYMO_STATUSAS  SMALLINT             not null,
+   PRISTATYMO_DATA_IR_LAIKAS DATE,
+   constraint PK_PAPILDO_UZSAKYMAS primary key (UZSAKYMO_ID)
+);
+
+
+/*==============================================================*/
+/* Table: PATALPOS_DARBAS                                       */
+/*==============================================================*/
+create table PATALPOS_DARBAS 
+(
+   DARBO_ID             NUMBER(20)           not null,
+   SKYRIAUS_PAVADINIMAS VARCHAR2(50)         not null,
+   PERSIRENGIMO_VIETOS_ID NUMBER(20),
+   SALES_ID             NUMBER(20),
+   ZONOS_ID             NUMBER(20),
+   DARBO_TIPAS          VARCHAR2(50)         not null,
+   DARBUOTOJU_KIEKIS    NUMBER(1)            not null,
+   DARBO_DATA           DATE                 not null,
+   DARBO_BUSENA         SMALLINT             not null,
+   constraint PK_PATALPOS_DARBAS primary key (DARBO_ID)
+);
+
+
+
+
+
+/*==============================================================*/
+/* Table: PERSIRENGIMO_VIETA                                    */
+/*==============================================================*/
+create table PERSIRENGIMO_VIETA 
+(
+   PERSIRENGIMO_VIETOS_ID NUMBER(20)       not null,
+   AUKSTAS              NUMBER(1)            not null,
+   LYTIS                VARCHAR2(10)         not null,
+   constraint PK_PERSIRENGIMO_VIETA primary key (PERSIRENGIMO_VIETOS_ID)
+);
+
+/*==============================================================*/
+/* Table: SKYRIUS                                               */
+/*==============================================================*/
+create table SKYRIUS 
+(
+   SKYRIAUS_PAVADINIMAS VARCHAR2(50)         not null,
+   S_DARBUOTOJU_KIEKIS  NUMBER(3)            not null,
+   constraint PK_SKYRIUS primary key (SKYRIAUS_PAVADINIMAS)
+);
+
+
+
+
+
+/*==============================================================*/
+/* Table: SPORTO_SALE                                           */
+/*==============================================================*/
+create table SPORTO_SALE 
+(
+   SALES_ID             NUMBER(20)           not null,
+   SALES_PASKIRTIS      VARCHAR2(50)         not null,
+   TRENIRUOKLIU_KIEKIS  NUMBER(3),
+   SALES_TALPA          NUMBER(4)            not null,
+   constraint PK_SPORTO_SALE primary key (SALES_ID)
+);
+
+
+/*==============================================================*/
+/* Table: TIEKEJAS                                              */
+/*==============================================================*/
+create table TIEKEJAS 
+(
+   TIEKEJO_ID           NUMBER(20)           not null,
+   TIEKEJO_PAVADINIMAS  VARCHAR2(50)         not null,
+   MIESTAS              VARCHAR2(50)         not null,
+   SPECIALIZACIJA       VARCHAR2(50)         not null,
+   T_TELEFONO_NUMERIS   VARCHAR2(20),
+   T_EL_PASTAS          VARCHAR2(50),
+   constraint PK_TIEKEJAS primary key (TIEKEJO_ID)
+);
+
+/*==============================================================*/
+/* Table: TRENIRUOKLIS                                          */
+/*==============================================================*/
+create table TRENIRUOKLIS 
+(
+   TRENIRUOKLIO_ID      NUMBER(20)           not null,
+   SALES_ID             NUMBER(20)           not null,
+   TRENIRUOKLIO_PAVADINIMAS VARCHAR2(50)     not null,
+   TRENIRUOKLIO_ISIGIJIMO_DATA DATE          not null,
+   TRENIRUOKLIO_KAINA   NUMBER(20)           not null,
+   BUKLE                NUMBER(2)            not null,
+   constraint PK_TRENIRUOKLIS primary key (TRENIRUOKLIO_ID)
+);
+
+
+/*==============================================================*/
+/* FK                                       */
+/*==============================================================*/
+
+alter table DARBO_SUTARTIS
+   add constraint FK_DARBOSUTARTIS_SKYRIUS foreign key (SKYRIAUS_PAVADINIMAS)
+      references SKYRIUS (SKYRIAUS_PAVADINIMAS);
+
+alter table DARBO_SUTARTIS
+   add constraint FK_DARBOSUTARTIS_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table ASMENINE_TRENIRUOTE
+   add constraint FK_ASMTRENIRUOTE_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table PAPILDO_PARDAVIMAS
+   add constraint FK_PAPILDO_PARD_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table PAPILDO_PARDAVIMAS
+   add constraint FK_PAPILDO_PARD_PAPILDAS foreign key (PAPILDO_BARKODAS)
+      references PAPILDAS (PAPILDO_BARKODAS);
+
+alter table GRUPINE_TRENIRUOTE
+   add constraint FK_GRUPTRENIRUOTE_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table MOKEJIMAS
+   add constraint FK_MOKEJIMAS_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table KLIENTAS
+   add constraint FK_KLIENTAS_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table PAPILDO_UZSAKYMAS
+   add constraint FK_PAPILDO_UZSAK_DARBUOTOJAS foreign key (DARBUOTOJO_ID)
+      references DARBUOTOJAS (DARBUOTOJO_ID);
+
+alter table ASMENINE_TRENIRUOTE
+   add constraint FK_ASMTRENIRUOTE_KLIENTAS foreign key (KLIENTO_ID)
+      references KLIENTAS (KLIENTO_ID);
+
+alter table MOKEJIMAS
+   add constraint FK_MOKEJIMAS_KLIENTAS foreign key (KLIENTO_ID)
+      references KLIENTAS (KLIENTO_ID);
+
+alter table KLIENTAS
+   add constraint FK_KLIENTAS_ABONEMENTAS foreign key (ABONEMENTO_ID)
+      references ABONEMENTAS (ABONEMENTO_ID);
+
+alter table PATALPOS_DARBAS
+   add constraint FK_PDARBAS_SKYRIUS foreign key (SKYRIAUS_PAVADINIMAS)
+      references SKYRIUS (SKYRIAUS_PAVADINIMAS);
+
+alter table PATALPOS_DARBAS
+   add constraint FK_PDARBAS_PVIETA foreign key (PERSIRENGIMO_VIETOS_ID)
+      references PERSIRENGIMO_VIETA (PERSIRENGIMO_VIETOS_ID);
+
+alter table PATALPOS_DARBAS
+   add constraint FK_PDARBAS_SPORTOSALE foreign key (SALES_ID)
+      references SPORTO_SALE (SALES_ID);
+
+alter table PATALPOS_DARBAS
+   add constraint FK_PDARBAS_BZONA foreign key (ZONOS_ID)
+      references BASEINO_ZONA (ZONOS_ID);
+
+alter table INVENTORIUS
+   add constraint FK_INVENTORIUS_SKYRIUS foreign key (SKYRIAUS_PAVADINIMAS)
+      references SKYRIUS (SKYRIAUS_PAVADINIMAS);
+
+alter table GEDIMAS
+   add constraint FK_GEDIMAS_SKYRIUS foreign key (SKYRIAUS_PAVADINIMAS)
+      references SKYRIUS (SKYRIAUS_PAVADINIMAS);
+
+alter table TRENIRUOKLIS
+   add constraint FK_SPORTOSALE_TRENKLIS foreign key (SALES_ID)
+      references SPORTO_SALE (SALES_ID);
+
+alter table PAPILDO_UZSAKYMAS
+   add constraint FK_PAPILDO_UZSAK_TIEKEJAS foreign key (TIEKEJO_ID)
+      references TIEKEJAS (TIEKEJO_ID);
+
+alter table PAPILDO_UZSAKYMAS
+   add constraint FK_PAPILDO_UZSAK_PAPILDAS foreign key (PAPILDO_BARKODAS)
+      references PAPILDAS (PAPILDO_BARKODAS);
+
+
+/*==============================================================*/
+/* Indeksai                                       */
+/*==============================================================*/
+
+create index D_SUTARTIS_SKYRIAUS_PAV_IX on DARBO_SUTARTIS (SKYRIAUS_PAVADINIMAS);
+
+create index D_SUTARTIS_DARBUOTOJO_ID_IX on DARBO_SUTARTIS (DARBUOTOJO_ID);
+
+create index A_TRENIRUOTE_DARBUOTO_ID_IX on ASMENINE_TRENIRUOTE (DARBUOTOJO_ID);
+
+create index PAPILDO_PARD_DARBUOTOJO_ID_IX on PAPILDO_PARDAVIMAS (DARBUOTOJO_ID);
+
+create index PAPILDO_PARD_PAPILDO_BAR_IX on PAPILDO_PARDAVIMAS (PAPILDO_BARKODAS);
+
+create index G_TRENIRUOTE_DARBUOTOJO_ID_IX on GRUPINE_TRENIRUOTE (DARBUOTOJO_ID);
+
+create index MOKEJIMAS_DARBUOTOJO_ID_IX on MOKEJIMAS (DARBUOTOJO_ID);
+
+create index KLIENTAS_DARBUOTOJO_ID_IX on KLIENTAS (DARBUOTOJO_ID);
+
+create index A_TRENIRUOTE_KLIENTO_ID_IX on ASMENINE_TRENIRUOTE (KLIENTO_ID);
+
+create index MOKEJIMAS_KLIENTO_ID_IX on MOKEJIMAS (KLIENTO_ID);
+
+create index KLIENTAS_ABONEMENTO_ID_IX on KLIENTAS (ABONEMENTO_ID);
+
+create index P_DARBAS_S_PAVADINIMAS_IX on PATALPOS_DARBAS (SKYRIAUS_PAVADINIMAS);
+
+create index P_DARBAS_PVIETOS_ID_IX on PATALPOS_DARBAS (PERSIRENGIMO_VIETOS_ID);
+
+create index P_DARBAS_SALES_ID_IX on PATALPOS_DARBAS (SALES_ID);
+
+create index P_DARBAS_ZONOS_ID_IX on PATALPOS_DARBAS (ZONOS_ID);
+
+create index INVENTORIUS_S_PAVADINIMAS_IX on INVENTORIUS (SKYRIAUS_PAVADINIMAS);
+
+create index GEDIMAS_S_PAVADINIMAS_IX on GEDIMAS (SKYRIAUS_PAVADINIMAS);
+
+create index TRENIRUOKLIS_SALES_ID_IX on TRENIRUOKLIS (SALES_ID);
+
+create index PAPILDO_UZSAK_DARBUOTOJO_ID_IX on PAPILDO_UZSAKYMAS (DARBUOTOJO_ID);
+
+create index PAPILDO_UZSAK_TIEKEJO_ID_IX on PAPILDO_UZSAKYMAS (TIEKEJO_ID);
+
+create index PAPILDO_UZSAK_PAPILDO_BAR_IX on PAPILDO_UZSAKYMAS (PAPILDO_BARKODAS);
+
+
+/*==============================================================*/
+/* Insertai                                      */
+/*==============================================================*/
+
+insert into "DARBUOTOJAS" ("DARBUOTOJO_ID", "D_VARDAS", "D_PAVARDE","D_TELEFONO_NUMERIS","D_EL_PASTAS") 
+values (601, 'Jonas', 'Jonaitis','+37064786111','jonasjonaitis@mail.lt');
+
+insert into "DARBUOTOJAS" ("DARBUOTOJO_ID", "D_VARDAS", "D_PAVARDE","D_TELEFONO_NUMERIS","D_EL_PASTAS") 
+values (703, 'Petras', 'Petraitis','+37064786222','petraspetraitis@mail.lt');
+
+insert into "DARBUOTOJAS" ("DARBUOTOJO_ID", "D_VARDAS", "D_PAVARDE","D_TELEFONO_NUMERIS","D_EL_PASTAS") 
+values (802, 'Paulius', 'Paulauskas','+37064786333','pauliuspaulauskas@mail.lt');
+
+insert into "DARBUOTOJAS" ("DARBUOTOJO_ID", "D_VARDAS", "D_PAVARDE","D_TELEFONO_NUMERIS","D_EL_PASTAS") 
+values (904, 'Rokas', 'Vasileckas','+37064782223','rokasvasileckas@mail.lt');
+
+
+insert into "PAPILDAS" ("PAPILDO_BARKODAS", "PAPILDO_PAVADINIMAS", "PAPILDO_RUSIS", "VIENETO_KAINA", "VIENETO_SVORIS", "GAMINTOJAS") 
+values (10123456, 'MyProtein', 'Proteinas', 19.99, 1.5, 'SuperPapildas');
+
+insert into "PAPILDAS" ("PAPILDO_BARKODAS", "PAPILDO_PAVADINIMAS", "PAPILDO_RUSIS", "VIENETO_KAINA", "VIENETO_SVORIS", "GAMINTOJAS") 
+values (10133458, 'MyCreatin', 'Kreatinas', 10.99, 0.5, 'MegaPapildas');
+
+insert into "PAPILDAS" ("PAPILDO_BARKODAS", "PAPILDO_PAVADINIMAS", "PAPILDO_RUSIS", "VIENETO_KAINA", "VIENETO_SVORIS", "GAMINTOJAS") 
+values (10123874, 'BuffMan', 'Metanas', 15.99, 1, 'BestPapildas');
+
+
+insert into "PAPILDO_PARDAVIMAS" ("PARDAVIMO_ID", "DARBUOTOJO_ID", "PAPILDO_BARKODAS", "PARDAVIMO_DATA_IR_LAIKAS", "PARDAVIMO_KIEKIS")
+values (1321, 601, 10123456, TO_DATE('2019/05/01', 'yyyy/mm/dd'), 1);
+
+insert into "PAPILDO_PARDAVIMAS" ("PARDAVIMO_ID", "DARBUOTOJO_ID", "PAPILDO_BARKODAS", "PARDAVIMO_DATA_IR_LAIKAS", "PARDAVIMO_KIEKIS")
+values (1322, 703, 10133458, TO_DATE('2019/05/02', 'yyyy/mm/dd'), 2);
+
+insert into "PAPILDO_PARDAVIMAS" ("PARDAVIMO_ID", "DARBUOTOJO_ID", "PAPILDO_BARKODAS", "PARDAVIMO_DATA_IR_LAIKAS", "PARDAVIMO_KIEKIS")
+values (1323, 802, 10123874, TO_DATE('2019/04/30', 'yyyy/mm/dd'), 3);
+
+
+insert into "TIEKEJAS" ("TIEKEJO_ID", "TIEKEJO_PAVADINIMAS", "MIESTAS", "SPECIALIZACIJA", "T_TELEFONO_NUMERIS", "T_EL_PASTAS")
+values (1111, 'BestSupply', 'Kaunas', 'Papildai', '+37064783111', 'bestsupply@mail.com');
+
+insert into "TIEKEJAS" ("TIEKEJO_ID", "TIEKEJO_PAVADINIMAS", "MIESTAS", "SPECIALIZACIJA", "T_TELEFONO_NUMERIS", "T_EL_PASTAS")
+values (1112, 'SuperSupply', 'Vilnius', 'Chemija', '+37064783232', 'supersupply@mail.com');
+
+insert into "TIEKEJAS" ("TIEKEJO_ID", "TIEKEJO_PAVADINIMAS", "MIESTAS", "SPECIALIZACIJA", "T_TELEFONO_NUMERIS", "T_EL_PASTAS")
+values (1113, 'MegaSupply', 'Riga', 'Steroidai', '+37064783456', 'megasupply@mail.com');
+
+
+insert into "PAPILDO_UZSAKYMAS" ("UZSAKYMO_ID", "DARBUOTOJO_ID", "TIEKEJO_ID", "PAPILDO_BARKODAS", "UZSAKYMO_KIEKIS","UZSAKYMO_DATA_IR_LAIKAS","PRISTATYMO_STATUSAS","PRISTATYMO_DATA_IR_LAIKAS")
+values (500, 601, 1111, 10123456, 10, TO_DATE('2019/04/20', 'yyyy/mm/dd'), 1, TO_DATE('2019/04/27', 'yyyy/mm/dd'));
+
+insert into "PAPILDO_UZSAKYMAS" ("UZSAKYMO_ID", "DARBUOTOJO_ID","TIEKEJO_ID","PAPILDO_BARKODAS","UZSAKYMO_KIEKIS","UZSAKYMO_DATA_IR_LAIKAS","PRISTATYMO_STATUSAS","PRISTATYMO_DATA_IR_LAIKAS")
+values (501, 601, 1112, 10133458, 20, TO_DATE('2019/04/21', 'yyyy/mm/dd'), 1, TO_DATE('2019/04/25', 'yyyy/mm/dd'));
+
+insert into "PAPILDO_UZSAKYMAS" ("UZSAKYMO_ID", "DARBUOTOJO_ID","TIEKEJO_ID","PAPILDO_BARKODAS","UZSAKYMO_KIEKIS","UZSAKYMO_DATA_IR_LAIKAS","PRISTATYMO_STATUSAS","PRISTATYMO_DATA_IR_LAIKAS")
+values (502, 601, 1113, 10123874, 5, TO_DATE('2019/04/20', 'yyyy/mm/dd'), 1, TO_DATE('2019/04/24', 'yyyy/mm/dd'));
+
+
+insert into "ABONEMENTAS" ("ABONEMENTO_ID","APMOKEJIMO_STATUSAS","ABONEMENTO_KAINA","PRADZIOS_DATA","PASIBAIGIMO_DATA","PRIEIGA_PRIE_SPORTO_SALIU","PRIEIGA_PRIE_BASEINO_ZONU","NUO_17_00_DARBO_DIENOMIS","PRIEIGA_SAVAITGALIAIS") 
+values (1, 1, 35, TO_DATE('2019/04/20', 'yyyy/mm/dd'), TO_DATE('2019/05/20', 'yyyy/mm/dd'), 1, 1, 1, 1);
+
+insert into "ABONEMENTAS" ("ABONEMENTO_ID","APMOKEJIMO_STATUSAS","ABONEMENTO_KAINA","PRADZIOS_DATA","PASIBAIGIMO_DATA","PRIEIGA_PRIE_SPORTO_SALIU","PRIEIGA_PRIE_BASEINO_ZONU","NUO_17_00_DARBO_DIENOMIS","PRIEIGA_SAVAITGALIAIS") 
+values (2, 1, 25, TO_DATE('2019/04/15', 'yyyy/mm/dd'), TO_DATE('2019/05/15', 'yyyy/mm/dd'), 1, 0, 1, 1);
+
+insert into "ABONEMENTAS" ("ABONEMENTO_ID","APMOKEJIMO_STATUSAS","ABONEMENTO_KAINA","PRADZIOS_DATA","PASIBAIGIMO_DATA","PRIEIGA_PRIE_SPORTO_SALIU","PRIEIGA_PRIE_BASEINO_ZONU","NUO_17_00_DARBO_DIENOMIS","PRIEIGA_SAVAITGALIAIS") 
+values (3, 1, 20, TO_DATE('2019/04/17', 'yyyy/mm/dd'), TO_DATE('2019/05/17', 'yyyy/mm/dd'), 0, 1, 1, 1);
+
+
+
+insert into "KLIENTAS" ("KLIENTO_ID","ABONEMENTO_ID","DARBUOTOJO_ID","K_VARDAS","K_PAVARDE","SASKAITOS_NUMERIS","K_EL_PASTAS","K_TELEFONO_NUMERIS") 
+values (7120, 1, 601, 'Markas', 'Zukas', 'LT-0000000001', 'mzukas@pastas.lt', '+37067890991');
+
+insert into "KLIENTAS" ("KLIENTO_ID","ABONEMENTO_ID","DARBUOTOJO_ID","K_VARDAS","K_PAVARDE","SASKAITOS_NUMERIS","K_EL_PASTAS","K_TELEFONO_NUMERIS") 
+values (7121, 1, 601, 'Antanas', 'Mukas', 'LT-0000000002', 'amukas@pastas.lt', '+37067890652');
+
+
+insert into "KLIENTAS" ("KLIENTO_ID","ABONEMENTO_ID","DARBUOTOJO_ID","K_VARDAS","K_PAVARDE","SASKAITOS_NUMERIS","K_EL_PASTAS","K_TELEFONO_NUMERIS") 
+values (7122, 2, 601, 'Lukas', 'Niukas', 'LT-0000000003', 'lniukas@pastas.lt', '+37067890423');
+
+
+insert into "MOKEJIMAS" ("MOKEJIMO_ID","DARBUOTOJO_ID","KLIENTO_ID","SUMA","MOKEJIMO_DATA_IR_LAIKAS","PASKIRTIS") 
+values (9250, 601, 7120, 50, TO_DATE('2019/04/25', 'yyyy/mm/dd'), 'Abonemento apmokejimas');
+
+insert into "MOKEJIMAS" ("MOKEJIMO_ID","DARBUOTOJO_ID","KLIENTO_ID","SUMA","MOKEJIMO_DATA_IR_LAIKAS","PASKIRTIS") 
+values (9251, 601, 7121, 30, TO_DATE('2019/04/20', 'yyyy/mm/dd'), 'Proteinas');
+
+insert into "MOKEJIMAS" ("MOKEJIMO_ID","DARBUOTOJO_ID","KLIENTO_ID","SUMA","MOKEJIMO_DATA_IR_LAIKAS","PASKIRTIS") 
+values (9252, 601, 7122, 50, TO_DATE('2019/04/26', 'yyyy/mm/dd'), 'Abonemento apmokejimas');
+
+
+insert into "ASMENINE_TRENIRUOTE" ("A_TRENIRUOTES_ID", "KLIENTO_ID", "DARBUOTOJO_ID","TRENIRUOTES_TIPAS","ASM_T_TRUKME","T_KAINA","TRENIRUOTES_DATA_IR_LAIKAS","SUDEGINTOS_KALORIJOS","TRENIRUOTES_KOMENTARAS","KLIENTO_SVORIS") 
+values (555, 7120, 703, 'Beginner', 90, 20, TO_DATE('2019/04/26', 'yyyy/mm/dd'), 300, 'Pradzia', 120.5);
+
+insert into "ASMENINE_TRENIRUOTE" ("A_TRENIRUOTES_ID", "KLIENTO_ID", "DARBUOTOJO_ID","TRENIRUOTES_TIPAS","ASM_T_TRUKME","T_KAINA","TRENIRUOTES_DATA_IR_LAIKAS","SUDEGINTOS_KALORIJOS","TRENIRUOTES_KOMENTARAS","KLIENTO_SVORIS") 
+values (565, 7120, 703, 'Beginner', 90, 20, TO_DATE('2019/04/29', 'yyyy/mm/dd'), 400, 'Nugara', 119);
+
+insert into "ASMENINE_TRENIRUOTE" ("A_TRENIRUOTES_ID", "KLIENTO_ID", "DARBUOTOJO_ID","TRENIRUOTES_TIPAS","ASM_T_TRUKME","T_KAINA","TRENIRUOTES_DATA_IR_LAIKAS","SUDEGINTOS_KALORIJOS","TRENIRUOTES_KOMENTARAS","KLIENTO_SVORIS") 
+values (569, 7120, 703, 'Beginner', 90, 20, TO_DATE('2019/05/02', 'yyyy/mm/dd'), 500, 'Kojos', 118);
+
+
+insert into "GRUPINE_TRENIRUOTE" ("G_TRENIRUOTES_ID","DARBUOTOJO_ID","PRADZIOS_LAIKAS","TRUKME","INTENSYVUMO_LYGIS") 
+values (622, 703, TO_DATE('2019/04/02', 'yyyy/mm/dd'), 60, 5);
+
+insert into "GRUPINE_TRENIRUOTE" ("G_TRENIRUOTES_ID","DARBUOTOJO_ID","PRADZIOS_LAIKAS","TRUKME","INTENSYVUMO_LYGIS") 
+values (623, 703, TO_DATE('2019/04/03', 'yyyy/mm/dd'), 60, 3);
+
+insert into "GRUPINE_TRENIRUOTE" ("G_TRENIRUOTES_ID","DARBUOTOJO_ID","PRADZIOS_LAIKAS","TRUKME","INTENSYVUMO_LYGIS") 
+values (624, 703, TO_DATE('2019/04/04', 'yyyy/mm/dd'), 60, 7);
+
+
+insert into "SKYRIUS" ("SKYRIAUS_PAVADINIMAS", "S_DARBUOTOJU_KIEKIS") 
+values ('Treneriai', 1);
+
+insert into "SKYRIUS" ("SKYRIAUS_PAVADINIMAS", "S_DARBUOTOJU_KIEKIS") 
+values ('Administratoriai', 1);
+
+insert into "SKYRIUS" ("SKYRIAUS_PAVADINIMAS", "S_DARBUOTOJU_KIEKIS") 
+values ('Ukvedziai', 1);
+
+insert into "SKYRIUS" ("SKYRIAUS_PAVADINIMAS", "S_DARBUOTOJU_KIEKIS") 
+values ('Valytojai', 1);
+
+
+insert into "DARBO_SUTARTIS" ("DARBO_SUTARTIES_ID","SKYRIAUS_PAVADINIMAS","DARBUOTOJO_ID","PAREIGOS","D_S_PASIRASYMO_DATA","D_S_PANAIKINIMO_DATA") 
+values (7110, 'Treneriai', 703, 'Gydytojas Treneris', TO_DATE('2019/02/26', 'yyyy/mm/dd'), NULL);
+
+insert into "DARBO_SUTARTIS" ("DARBO_SUTARTIES_ID","SKYRIAUS_PAVADINIMAS","DARBUOTOJO_ID","PAREIGOS","D_S_PASIRASYMO_DATA","D_S_PANAIKINIMO_DATA") 
+values (6112, 'Administratoriai', 601, 'Ryto Administratorius', TO_DATE('2019/03/01', 'yyyy/mm/dd'), NULL);
+
+insert into "DARBO_SUTARTIS" ("DARBO_SUTARTIES_ID","SKYRIAUS_PAVADINIMAS","DARBUOTOJO_ID","PAREIGOS","D_S_PASIRASYMO_DATA","D_S_PANAIKINIMO_DATA") 
+values (8210, 'Ukvedziai', 802, 'Ukvedis', TO_DATE('2019/03/10', 'yyyy/mm/dd'), NULL);
+
+insert into "DARBO_SUTARTIS" ("DARBO_SUTARTIES_ID","SKYRIAUS_PAVADINIMAS","DARBUOTOJO_ID","PAREIGOS","D_S_PASIRASYMO_DATA","D_S_PANAIKINIMO_DATA") 
+values (9311, 'Valytojai', 904, 'Valytojas', TO_DATE('2019/03/10', 'yyyy/mm/dd'), NULL);
+
+insert into "INVENTORIUS" ("INVENTORIAUS_ID","SKYRIAUS_PAVADINIMAS","INVERNTORIAUS_KATEGORIJA","INVENTORIAUS_ISIGIJIMO_DATA") 
+values (11, 'Ukvedziai', 'Taisymo irankis', TO_DATE('2019/03/15', 'yyyy/mm/dd'));
+
+insert into "INVENTORIUS" ("INVENTORIAUS_ID","SKYRIAUS_PAVADINIMAS","INVERNTORIAUS_KATEGORIJA","INVENTORIAUS_ISIGIJIMO_DATA") 
+values (12, 'Ukvedziai', 'Taisymo irankis', TO_DATE('2019/03/16', 'yyyy/mm/dd'));
+
+insert into "INVENTORIUS" ("INVENTORIAUS_ID","SKYRIAUS_PAVADINIMAS","INVERNTORIAUS_KATEGORIJA","INVENTORIAUS_ISIGIJIMO_DATA") 
+values (21, 'Administratoriai', 'Kompiuteriai', TO_DATE('2019/03/10', 'yyyy/mm/dd'));
+
+
+insert into "GEDIMAS" ("GEDIMO_ID","SKYRIAUS_PAVADINIMAS","GEDIMO_LAIKAS_IR_DATA","GEDIMO_STATUSAS","TAISYMO_LAIKAS_IR_DATA","GEDIMO_APRASYMAS") 
+values (20, 'Ukvedziai', TO_DATE('2019/04/10', 'yyyy/mm/dd'), 0, NULL, 'Sprogo vamzdis vyru rubineje 2 aukstas');
+
+insert into "GEDIMAS" ("GEDIMO_ID","SKYRIAUS_PAVADINIMAS","GEDIMO_LAIKAS_IR_DATA","GEDIMO_STATUSAS","TAISYMO_LAIKAS_IR_DATA","GEDIMO_APRASYMAS") 
+values (21, 'Ukvedziai', TO_DATE('2019/04/11', 'yyyy/mm/dd'), 0, NULL, 'Sprogo kriaukle moteru rubineje 2 aukstas');
+
+insert into "GEDIMAS" ("GEDIMO_ID","SKYRIAUS_PAVADINIMAS","GEDIMO_LAIKAS_IR_DATA","GEDIMO_STATUSAS","TAISYMO_LAIKAS_IR_DATA","GEDIMO_APRASYMAS") 
+values (22, 'Ukvedziai', TO_DATE('2019/04/12', 'yyyy/mm/dd'), 0, NULL, 'Sugedo dusas vyru rubineje 1 aukstas');
+
+
+insert into "BASEINO_ZONA" ("ZONOS_ID","ZONOS_PAVADINIMAS","ISNAUDOJAMAS_VANDENS_KIEKIS") 
+values (1, 'Turkiska pirtis', 1000);
+
+insert into "BASEINO_ZONA" ("ZONOS_ID","ZONOS_PAVADINIMAS","ISNAUDOJAMAS_VANDENS_KIEKIS") 
+values (2, 'Kubilas', 10000);
+
+insert into "BASEINO_ZONA" ("ZONOS_ID","ZONOS_PAVADINIMAS","ISNAUDOJAMAS_VANDENS_KIEKIS") 
+values (3, 'Baseinas', 1000000);
+
+
+insert into "PERSIRENGIMO_VIETA" ("PERSIRENGIMO_VIETOS_ID","AUKSTAS","LYTIS") 
+values (11, 1, 'vyr');
+
+insert into "PERSIRENGIMO_VIETA" ("PERSIRENGIMO_VIETOS_ID","AUKSTAS","LYTIS") 
+values (12, 1, 'mot');
+
+insert into "PERSIRENGIMO_VIETA" ("PERSIRENGIMO_VIETOS_ID","AUKSTAS","LYTIS") 
+values (22, 2, 'mot');
+
+
+insert into "SPORTO_SALE" ("SALES_ID","SALES_PASKIRTIS","TRENIRUOKLIU_KIEKIS","SALES_TALPA") 
+values (1, 'Laisvu svoriu', NULL, 15);
+
+insert into "SPORTO_SALE" ("SALES_ID","SALES_PASKIRTIS","TRENIRUOKLIU_KIEKIS","SALES_TALPA") 
+values (2, 'Sunkios atletikos', 5, 5);
+
+insert into "SPORTO_SALE" ("SALES_ID","SALES_PASKIRTIS","TRENIRUOKLIU_KIEKIS","SALES_TALPA") 
+values (3, 'Cardio', 15, 15);
+
+
+insert into "TRENIRUOKLIS" ("TRENIRUOKLIO_ID","SALES_ID","TRENIRUOKLIO_PAVADINIMAS","TRENIRUOKLIO_ISIGIJIMO_DATA","TRENIRUOKLIO_KAINA","BUKLE") 
+values (1, 2, 'deadlift modulis', TO_DATE('2019/04/01', 'yyyy/mm/dd'), 2000, 8);
+
+insert into "TRENIRUOKLIS" ("TRENIRUOKLIO_ID","SALES_ID","TRENIRUOKLIO_PAVADINIMAS","TRENIRUOKLIO_ISIGIJIMO_DATA","TRENIRUOKLIO_KAINA","BUKLE") 
+values (2, 2, 'bench press', TO_DATE('2019/04/01', 'yyyy/mm/dd'), 1500, 8);
+
+insert into "TRENIRUOKLIS" ("TRENIRUOKLIO_ID","SALES_ID","TRENIRUOKLIO_PAVADINIMAS","TRENIRUOKLIO_ISIGIJIMO_DATA","TRENIRUOKLIO_KAINA","BUKLE") 
+values (3, 3, 'begimo takelis', TO_DATE('2019/04/02', 'yyyy/mm/dd'), 2500, 8);
+
+
+insert into "PATALPOS_DARBAS" ("DARBO_ID", "SKYRIAUS_PAVADINIMAS","PERSIRENGIMO_VIETOS_ID", "SALES_ID","ZONOS_ID", "DARBO_TIPAS","DARBUOTOJU_KIEKIS", "DARBO_DATA","DARBO_BUSENA")
+values (101, 'Valytojai', 11, NULL, NULL, 'cheminis dusu valimas', 2, TO_DATE('2019/04/01', 'yyyy/mm/dd'), 1);
+
+insert into "PATALPOS_DARBAS" ("DARBO_ID", "SKYRIAUS_PAVADINIMAS","PERSIRENGIMO_VIETOS_ID", "SALES_ID","ZONOS_ID", "DARBO_TIPAS","DARBUOTOJU_KIEKIS", "DARBO_DATA","DARBO_BUSENA") 
+values (102, 'Ukvedziai', NULL, NULL, 3, 'baseino vandens pakeitimas', 2, TO_DATE('2019/04/02', 'yyyy/mm/dd'), 1);
+
+insert into "PATALPOS_DARBAS" ("DARBO_ID", "SKYRIAUS_PAVADINIMAS","PERSIRENGIMO_VIETOS_ID", "SALES_ID","ZONOS_ID", "DARBO_TIPAS","DARBUOTOJU_KIEKIS", "DARBO_DATA","DARBO_BUSENA") 
+values (103, 'Valytojai', NULL, NULL, 1, 't pirties cheminis valymas', 2, TO_DATE('2019/04/03', 'yyyy/mm/dd'), 1);
